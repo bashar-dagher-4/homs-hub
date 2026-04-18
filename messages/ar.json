@@ -1,0 +1,123 @@
+{
+  "nav": {
+    "home": "الرئيسية",
+    "sports": "الرياضة",
+    "health": "الصحة",
+    "education": "التعليم",
+    "news": "الأخبار",
+    "events": "الفعاليات",
+    "facilities": "المنشآت",
+    "history": "التاريخ",
+    "services": "الخدمات",
+    "dashboard": "لوحة التحكم",
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج"
+  },
+  "common": {
+    "search": "بحث",
+    "filter": "تصفية",
+    "all": "الكل",
+    "sports": "الرياضة",
+    "health": "الصحة",
+    "education": "التعليم",
+    "add": "إضافة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "loading": "جار التحميل...",
+    "noData": "لا توجد بيانات",
+    "readMore": "اقرأ المزيد",
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "maintenance": "صيانة"
+    },
+      "sectors": {
+  "all": "الكل",
+  "sports": "الرياضة",
+  "health": "الصحة",
+  "education": "التعليم"
+}
+  },
+  "home": {
+    "hero": {
+    "title": "مجلس مدينة حمص",
+    "subtitle": "بوابتك الرقمية لخدمات المدينة",
+    "badge": "مجلس مدينة حمص",
+    "exploreServices": "استكشف الخدمات",
+    "latestNews": "آخر الأخبار"
+  },
+    "sections": {
+      "news": "آخر الأخبار",
+      "events": "الفعاليات القادمة",
+      "services": "خدماتنا",
+      "media": "معرض الصور"
+    }
+  },
+  "faq": {
+  "title": "الأسئلة الشائعة",
+  "subtitle": "هل لديك سؤال؟ أرسله إلينا",
+  "name": "الاسم (اختياري)",
+  "sector": "القسم",
+  "question": "سؤالك",
+  "send": "إرسال",
+  "success": "تم إرسال سؤالك بنجاح",
+  "namePlaceholder": "أدخل اسمك",
+  "questionPlaceholder": "اكتب سؤالك هنا..."
+},
+  "auth": {
+  "login": "تسجيل الدخول",
+  "username": "اسم المستخدم",
+  "password": "كلمة المرور",
+  "loginButton": "دخول",
+  "error": "اسم المستخدم أو كلمة المرور غير صحيحة",
+  "usernamePlaceholder": "أدخل اسم المستخدم",
+  "passwordPlaceholder": "أدخل كلمة المرور"
+},
+  "dashboard": {
+  "title": "لوحة التحكم",
+  "welcome": "مرحباً",
+  "overview": "نظرة عامة",
+  "sports": "قطاع الرياضة",
+  "health": "قطاع الصحة",
+  "education": "قطاع التعليم",
+  "faq": "الأسئلة الشائعة",
+  "logout": "تسجيل الخروج",
+  "stats": {
+    "total": "الإجمالي",
+    "active": "النشطة",
+    "maintenance": "قيد الصيانة"
+  },
+  "tabs": {
+    "news": "الأخبار",
+    "events": "الفعاليات",
+    "services": "الخدمات",
+    "facilities": "المنشآت"
+  },
+  "actions": {
+    "add": "إضافة",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "confirm": "تأكيد",
+    "cancel": "إلغاء",
+    "deleteConfirm": "هل أنت متأكد من الحذف؟"
+  }
+},
+  "sections": {
+  "news": "آخر الأخبار",
+  "events": "الفعاليات القادمة",
+  "services": "خدماتنا",
+  "media": "معرض الصور"
+},
+
+  "footer": {
+  "description": "بوابتك الرقمية لخدمات مدينة حمص",
+  "quickLinks": "روابط سريعة",
+  "contactUs": "تواصل معنا",
+  "address": " حمص، سوريا",
+  "phone": " +963 31 000 0000",
+  "email": " info@homshub.sy",
+  "rights": "© 2025 مجلس مدينة حمص. جميع الحقوق محفوظة."
+}
+}

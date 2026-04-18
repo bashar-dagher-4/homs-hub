@@ -1,0 +1,122 @@
+{
+  "nav": {
+    "home": "Home",
+    "sports": "Sports",
+    "health": "Health",
+    "education": "Education",
+    "news": "News",
+    "events": "Events",
+    "facilities": "Facilities",
+    "history": "History",
+    "services": "Services",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "common": {
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "sports": "Sports",
+    "health": "Health",
+    "education": "Education",
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "noData": "No data found",
+    "readMore": "Read More",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "maintenance": "Maintenance"
+    },  "sectors": {
+  "all": "All",
+  "sports": "Sports",
+  "health": "Health",
+  "education": "Education"
+}
+  },
+  "home": {
+      "hero": {
+    "title": "Homs City Council",
+    "subtitle": "Your digital gateway to city services",
+    "badge": "Homs City Council",
+    "exploreServices": "Explore Services",
+    "latestNews": "Latest News"
+  },
+    "sections": {
+      "news": "Latest News",
+      "events": "Upcoming Events",
+      "services": "Our Services",
+      "media": "Media Gallery"
+    }
+  },
+ "faq": {
+  "title": "FAQ",
+  "subtitle": "Have a question? Send it to us",
+  "name": "Name (optional)",
+  "sector": "Sector",
+  "question": "Your Question",
+  "send": "Send",
+  "success": "Your question has been sent successfully",
+  "namePlaceholder": "Enter your name",
+  "questionPlaceholder": "Write your question here..."
+},
+ "auth": {
+  "login": "Login",
+  "username": "Username",
+  "password": "Password",
+  "loginButton": "Sign In",
+  "error": "Invalid username or password",
+  "usernamePlaceholder": "Enter your username",
+  "passwordPlaceholder": "Enter your password"
+},
+  "dashboard": {
+  "title": "Dashboard",
+  "welcome": "Welcome",
+  "overview": "Overview",
+  "sports": "Sports Sector",
+  "health": "Health Sector",
+  "education": "Education Sector",
+  "faq": "FAQ",
+  "logout": "Logout",
+  "stats": {
+    "total": "Total",
+    "active": "Active",
+    "maintenance": "Under Maintenance"
+  },
+  "tabs": {
+    "news": "News",
+    "events": "Events",
+    "services": "Services",
+    "facilities": "Facilities"
+  },
+  "actions": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "deleteConfirm": "Are you sure you want to delete?"
+  }
+},
+  "sections": {
+  "news": "Latest News",
+  "events": "Upcoming Events",
+  "services": "Our Services",
+  "media": "Media Gallery"
+},
+
+  "footer": {
+  "description": "Your digital gateway to Homs city services",
+  "quickLinks": "Quick Links",
+  "contactUs": "Contact Us",
+  "address": " Homs, Syria",
+  "phone": " +963 31 000 0000",
+  "email": " info@homshub.sy",
+  "rights": "© 2025 Homs City Council. All rights reserved."
+}
+}
