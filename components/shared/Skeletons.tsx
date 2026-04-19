@@ -8,6 +8,8 @@ export function NewsCardSkeleton() {
             style={{
                 backgroundColor: "var(--card)",
                 border: "1px solid var(--border)",
+                height: "380px",
+                width: "100%",
             }}
         >
             {/* الصورة */}

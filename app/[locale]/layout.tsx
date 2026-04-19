@@ -5,6 +5,8 @@ import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import "../globals.css";
 import { QueryProvider } from "@/components/providers/QueryProviders";
 import { SessionProvider } from "@/components/providers/SessionProvider";
+import { Cairo } from "next/font/google"
+
 
 // export const metadata: Metadata = {
 //   title: {
@@ -24,6 +26,7 @@ import { SessionProvider } from "@/components/providers/SessionProvider";
 //   },
 // }
 
+
 export async function generateMetadata({
   params,
 }: {
@@ -42,6 +45,11 @@ export async function generateMetadata({
   }
 }
 
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  display: "swap",      
+  preload: true,
+})
 
 export default async function LocaleLayout({
   children,
@@ -53,7 +61,7 @@ export default async function LocaleLayout({
   const { locale } = await params;
   const messages = await getMessages({ locale });
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={cairo.className}>
       <body suppressHydrationWarning>
         <ThemeProvider>
           <SessionProvider>
