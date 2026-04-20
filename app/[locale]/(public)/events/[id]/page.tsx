@@ -13,11 +13,15 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, locale } = await params
   const event = await getEventById(id)
-  if (!event) return { title: "فعالية غير موجودة" }
+  if (!event) return { title: locale === "ar" ? "فعالية غير موجودة" : "Event Not Found" }
 
   return {
     title: getLocalizedText(event.title_ar, event.title_en, locale),
     description: getLocalizedText(event.description_ar, event.description_en, locale),
+    openGraph: {
+      title: getLocalizedText(event.title_ar, event.title_en, locale),
+      images: [{ url: event.image }],
+    },
   }
 }
 

@@ -20,7 +20,7 @@ type Props = {
 export function FacilitiesList({ limit, showMap = false, showLink = false }: Props) {
   const t = useTranslations("nav")
   const locale = useLocale()
-  const [sector] = useQueryState('sector' , {
+  const [sector] = useQueryState('facilities-sector' , {
     defaultValue: 'all',
   })
   const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null)
@@ -50,7 +50,7 @@ export function FacilitiesList({ limit, showMap = false, showLink = false }: Pro
               style={{ backgroundColor: "var(--primary)" }}
             />
           </div>
-          <SectorFilter />
+          <SectorFilter queryKey="facilities-sector"/>
         </div>
 
         {/* الخريطة */}

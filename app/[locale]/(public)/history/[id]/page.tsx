@@ -13,7 +13,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, locale } = await params
   const item = await getHistoryById(id)
-  if (!item) return { title: "غير موجود" }
+  if (!item) return { title: locale === "ar" ? "غير موجود" : "Not Found" }
 
   return {
     title: getLocalizedText(item.title_ar, item.title_en, locale),

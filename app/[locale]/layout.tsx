@@ -8,23 +8,7 @@ import { SessionProvider } from "@/components/providers/SessionProvider";
 import { Cairo } from "next/font/google"
 
 
-// export const metadata: Metadata = {
-//   title: {
-//     default: "مجلس مدينة حمص | Homs City Council",
-//     template: "%s | مجلس مدينة حمص",
-//   },
-//   description: "البوابة الرقمية الرسمية لمجلس مدينة حمص — خدمات، أخبار، فعاليات ومنشآت المدينة",
-//   keywords: ["حمص", "مجلس المدينة", "خدمات حكومية", "سوريا", "Homs", "City Council"],
-//   authors: [{ name: "مجلس مدينة حمص" }],
-//   creator: "Homs Hub Team",
-//   openGraph: {
-//     type: "website",
-//     locale: "ar_SY",
-//     siteName: "مجلس مدينة حمص",
-//     title: "مجلس مدينة حمص | البوابة الرقمية",
-//     description: "البوابة الرقمية الرسمية لمجلس مدينة حمص",
-//   },
-// }
+
 
 
 export async function generateMetadata({
@@ -33,14 +17,32 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const isAr = locale === "ar"
 
   return {
+    title: {
+      default: isAr
+        ? "مجلس مدينة حمص | البوابة الرقمية"
+        : "Homs City Council | Digital Portal",
+      template: isAr
+        ? "%s | مجلس مدينة حمص"
+        : "%s | Homs City Council",
+    },
+    description: isAr
+      ? "البوابة الرقمية الرسمية لمجلس مدينة حمص — خدمات وأخبار وفعاليات ومنشآت المدينة"
+      : "Official digital portal of Homs City Council — services, news, events and facilities",
+    keywords: ["حمص", "مجلس المدينة", "سوريا", "Homs", "City Council", "Syria"],
     alternates: {
-      canonical: `https://homs-hub.vercel.app/${locale}`,
+      canonical: `https://homshub.vercel.app/${locale}`,
       languages: {
-        ar: "https://homs-hub.vercel.app/ar",
-        en: "https://homs-hub.vercel.app/en",
+        ar: "https://homshub.vercel.app/ar",
+        en: "https://homshub.vercel.app/en",
       },
+    },
+    openGraph: {
+      type: "website",
+      locale: isAr ? "ar_SY" : "en_US",
+      siteName: isAr ? "مجلس مدينة حمص" : "Homs City Council",
     },
   }
 }

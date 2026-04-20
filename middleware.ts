@@ -5,7 +5,8 @@ import { getToken } from 'next-auth/jwt'
 const intlMiddleware = createMiddleware({
   locales: ['ar', 'en'],
   defaultLocale: 'ar',
-  localePrefix: 'always'
+  localePrefix: 'always',
+  localeDetection: false,
 })
 
 export async function middleware(req: NextRequest) {

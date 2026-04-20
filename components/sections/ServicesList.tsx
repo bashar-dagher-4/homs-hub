@@ -19,7 +19,7 @@ export function ServicesList({ limit, showLink = false }: Props) {
   const t = useTranslations("nav")
   const tSections = useTranslations("home.sections")
   const locale = useLocale()
-  const [sector] = useQueryState("sector" , {
+  const [sector] = useQueryState("services-sector" , {
     defaultValue: 'all',
   })
 
@@ -49,7 +49,7 @@ export function ServicesList({ limit, showLink = false }: Props) {
             />
           </div>
           <div className="flex items-center gap-4 flex-wrap">
-            <SectorFilter/>
+            <SectorFilter queryKey="services-sector"/>
             {showLink && (
               <Link
                 href={`/${locale}/services`}

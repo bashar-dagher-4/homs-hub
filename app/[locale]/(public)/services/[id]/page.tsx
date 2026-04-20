@@ -9,10 +9,11 @@ type Props = {
   params: Promise<{ id: string; locale: string }>
 }
 
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, locale } = await params
   const service = await getServiceById(id)
-  if (!service) return { title: "خدمة غير موجودة" }
+  if (!service) return { title: locale === "ar" ? "خدمة غير موجودة" : "Service Not Found" }
 
   return {
     title: getLocalizedText(service.title_ar, service.title_en, locale),

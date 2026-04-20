@@ -22,7 +22,7 @@ export function NewsList({ limit, showLink = false }: Props) {
   const locale = useLocale()
 
   // يقرأ sector من الـ URL تلقائياً
-  const [sector] = useQueryState('sector', {
+  const [sector] = useQueryState('news-sector', {
     defaultValue: 'all',
   })
 
@@ -50,7 +50,7 @@ export function NewsList({ limit, showLink = false }: Props) {
             />
           </div>
           <div className="flex items-center gap-4 flex-wrap">
-            <SectorFilter />
+            <SectorFilter queryKey='news-sector'/>
             {showLink && (
               <Link
                 href={`/${locale}/news`}

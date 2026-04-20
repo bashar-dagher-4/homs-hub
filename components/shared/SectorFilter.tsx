@@ -6,12 +6,12 @@ import type { Sector } from "@/types/common"
 
 const sectors: Sector[] = ["all", "sports", "health", "education"]
 
-export function SectorFilter() {
+export function SectorFilter({queryKey='sector'}) {
   const t = useTranslations("common.sectors")
 
   // بدل useState → useQueryState
   // يحفظ القيمة في URL كـ ?sector=sports
-  const [sector, setSector] = useQueryState('sector', {
+  const [sector, setSector] = useQueryState(queryKey, {
     defaultValue: 'all',
   })
 

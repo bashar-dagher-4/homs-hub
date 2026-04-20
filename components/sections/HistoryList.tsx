@@ -18,7 +18,7 @@ type Props = {
 export function HistoryList({ limit, showLink = false }: Props) {
   const t = useTranslations("nav")
   const locale = useLocale()
-  const [sector] = useQueryState("sector" , {
+  const [sector] = useQueryState("history-sector" , {
     defaultValue: 'all',
   })
 
@@ -48,7 +48,7 @@ export function HistoryList({ limit, showLink = false }: Props) {
             />
           </div>
           <div className="flex items-center gap-4 flex-wrap">
-            <SectorFilter />
+            <SectorFilter queryKey="history-sector"/>
             {showLink && (
               <Link
                 href={`/${locale}/history`}
