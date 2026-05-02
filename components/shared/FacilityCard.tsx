@@ -35,6 +35,7 @@ export function FacilityCard({ facility, onClick, isSelected }: Props) {
           alt={getLocalizedText(facility.title_ar, facility.title_en, locale)}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
+          loading="lazy"
         />
 
         {/* القطاع */}

@@ -64,6 +64,9 @@ export default async function LocaleLayout({
   const messages = await getMessages({ locale });
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={cairo.className}>
+      <head>
+        <meta name="viewport" content="width=device-width , initial-scale=1"/>
+      </head>
       <body suppressHydrationWarning>
         <ThemeProvider>
           <SessionProvider>

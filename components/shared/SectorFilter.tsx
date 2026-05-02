@@ -25,7 +25,7 @@ export function SectorFilter({queryKey='sector'}) {
           style={
             (sector ?? 'all') === s
               ? { backgroundColor: "var(--primary)", color: "white" }
-              : { backgroundColor: "var(--secondary)", color: "var(--muted-foreground)" }
+              : { backgroundColor: "var(--secondary)", color: "var(--foreground)" }
           }
         >
           {t(s)}

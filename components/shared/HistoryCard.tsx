@@ -30,6 +30,7 @@ export function HistoryCard({ item }: Props) {
             alt={getLocalizedText(item.title_ar, item.title_en, locale)}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

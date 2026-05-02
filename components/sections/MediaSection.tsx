@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query"
 import { getLocalizedText } from "@/lib/utils"
 import { getFeaturedMedia } from "@/lib/api/media"
 import { Play } from "lucide-react"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+// import Link from "next/link"
+// import { ArrowLeft } from "lucide-react"
 
 export function MediaSection() {
   const t = useTranslations("home.sections")
@@ -58,12 +58,19 @@ export function MediaSection() {
                 style={{ backgroundColor: "var(--muted)" }}
               >
                 {/* الصورة */}
-                <Image
-                  src={item.url}
-                  alt={getLocalizedText(item.description_ar, item.description_en, locale)}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
+                {item.url ? (
+                          <Image
+                            src={item.url}
+                            alt={item.description_ar}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <span className="text-4xl">📰</span>
+                          </div>
+                        )}
 
                 {/* طبقة تعتيم عند hover */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300" />
