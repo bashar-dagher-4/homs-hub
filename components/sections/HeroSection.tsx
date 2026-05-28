@@ -12,11 +12,10 @@ export function HeroSection() {
       {/* الصورة */}
       <Image
         src="/hero.webp"
-        alt="حمص"
+        alt={t('title')}
         fill
         priority
         className="object-cover"
-        fetchPriority="high"
       />
 
       {/* طبقة داكنة */}

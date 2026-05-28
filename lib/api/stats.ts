@@ -1,4 +1,4 @@
-import type { Sector } from "@/types/common"
+import type { ApiResponse, Sector } from "@/types/common"
 import { mockMonthlyStats } from "@/lib/mock/stats"
 
 const USE_MOCK = true
@@ -24,8 +24,10 @@ export async function getMonthlyStats(): Promise<MonthlyStat[]> {
   if (USE_MOCK) return mockMonthlyStats
 
   const res = await fetch(`/api/stats/monthly`)
-  if (!res.ok) throw new Error("فشل جلب الإحصائيات الشهرية")
-  return res.json()
+   const json: ApiResponse<MonthlyStat[]> = await res.json()
+  if (!json.success) throw new Error(json.message)
+
+  return json.data 
 }
 
 export async function getSectorStats(): Promise<SectorStat[]> {
@@ -39,6 +41,8 @@ export async function getSectorStats(): Promise<SectorStat[]> {
   }
 
   const res = await fetch(`/api/stats/sectors`)
-  if (!res.ok) throw new Error("فشل جلب إحصائيات القطاعات")
-  return res.json()
+   const json: ApiResponse<SectorStat[]> = await res.json()
+  if (!json.success) throw new Error(json.message)
+
+  return json.data 
 }

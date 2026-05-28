@@ -71,7 +71,7 @@ export default function LoginForm() {
         {/* اللوغو */}
         <div className="flex justify-center mb-8">
           <Image
-            src="/logo.png"
+            src="/logo.jpg"
             alt="Homs Hub"
             width={150}
             height={50}

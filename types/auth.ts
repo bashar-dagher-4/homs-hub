@@ -7,4 +7,5 @@ export type AuthUser = {
   username: string
   role: UserRole
   sector: UserSector
+  accessToken: string
 }

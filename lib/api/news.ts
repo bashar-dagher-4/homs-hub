@@ -1,8 +1,9 @@
 import type { News } from "@/types/news"
-import type { Sector } from "@/types/common"
+import type { ApiResponse, Sector } from "@/types/common"
 import { mockNews } from "@/lib/mock/news"
+import { apiRequest } from "@/lib/api/client"
 
-const USE_MOCK = true  // ← غيّرها لـ false عند ربط الباك
+const USE_MOCK = false  // ← غيّرها لـ false عند ربط الباك
 
 export async function getNews(sector?: Sector): Promise<News[]> {
   if (USE_MOCK) {
@@ -13,8 +14,11 @@ export async function getNews(sector?: Sector): Promise<News[]> {
     ? `/api/news?sector=${sector}`
     : `/api/news`
   const res = await fetch(url)
-  if (!res.ok) throw new Error("فشل جلب الأخبار")
-  return res.json()
+  
+  const json: ApiResponse<News[]> = await res.json()
+  if (!json.success) throw new Error(json.message)
+
+  return json.data  // ← البيانات الحقيقية
 }
 
 export async function getFeaturedNews(): Promise<News[]> {
@@ -30,4 +34,23 @@ export async function getNewsById(id: string): Promise<News | null> {
   const res = await fetch(`/api/news/${id}`)
   if (!res.ok) return null
   return res.json()
+}
+export async function createNews(data: Partial<News>): Promise<News> {
+  return apiRequest<News>("/api/news/", {
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+}
+
+export async function updateNews(id: string, data: Partial<News>): Promise<News> {
+  return apiRequest<News>(`/api/news/${id}/`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteNews(id: string): Promise<void> {
+  return apiRequest<void>(`/api/news/${id}/`, {
+    method: "DELETE",
+  })
 }

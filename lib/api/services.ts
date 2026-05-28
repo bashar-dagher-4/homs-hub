@@ -1,6 +1,7 @@
 import type { Service } from "@/types/service"
-import type { Sector } from "@/types/common"
+import type { ApiResponse, Sector } from "@/types/common"
 import { mockServices } from "@/lib/mock/services"
+import { apiRequest } from "@/lib/api/client"
 
 const USE_MOCK = true
 
@@ -13,8 +14,10 @@ export async function getServices(sector?: Sector): Promise<Service[]> {
     ? `/api/services?sector=${sector}`
     : `/api/services`
   const res = await fetch(url)
-  if (!res.ok) throw new Error("فشل جلب الخدمات")
-  return res.json()
+   const json: ApiResponse<Service[]> = await res.json()
+  if (!json.success) throw new Error(json.message)
+
+  return json.data 
 }
 
 export async function getServiceById(id: string): Promise<Service | null> {
@@ -25,4 +28,23 @@ export async function getServiceById(id: string): Promise<Service | null> {
   const res = await fetch(`/api/services/${id}`)
   if (!res.ok) return null
   return res.json()
+}
+export async function createService(data: Partial<Service>): Promise<Service> {
+  return apiRequest<Service>("/api/services/", {
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+}
+
+export async function updateService(id: string, data: Partial<Service>): Promise<Service> {
+  return apiRequest<Service>(`/api/services/${id}/`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteService(id: string): Promise<void> {
+  return apiRequest<void>(`/api/services/${id}/`, {
+    method: "DELETE",
+  })
 }

@@ -1,6 +1,7 @@
 import type { Facility } from "@/types/facility"
-import type { Sector } from "@/types/common"
+import type { ApiResponse, Sector } from "@/types/common"
 import { mockFacilities } from "@/lib/mock/facilities"
+import { apiRequest } from "@/lib/api/client"
 
 const USE_MOCK = true
 
@@ -13,8 +14,10 @@ export async function getFacilities(sector?: Sector): Promise<Facility[]> {
     ? `/api/facilities?sector=${sector}`
     : `/api/facilities`
   const res = await fetch(url)
-  if (!res.ok) throw new Error("فشل جلب المنشآت")
-  return res.json()
+   const json: ApiResponse<Facility[]> = await res.json()
+  if (!json.success) throw new Error(json.message)
+
+  return json.data 
 }
 
 export async function getFacilityById(id: string): Promise<Facility | null> {
@@ -25,4 +28,23 @@ export async function getFacilityById(id: string): Promise<Facility | null> {
   const res = await fetch(`/api/facilities/${id}`)
   if (!res.ok) return null
   return res.json()
+}
+export async function createFacility(data: Partial<Facility>): Promise<Facility> {
+  return apiRequest<Facility>("/api/facilities/", {
+    method: "POST",
+    body: JSON.stringify(data),
+  })
+}
+
+export async function updateFacility(id: string, data: Partial<Facility>): Promise<Facility> {
+  return apiRequest<Facility>(`/api/facilities/${id}/`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  })
+}
+
+export async function deleteFacility(id: string): Promise<void> {
+  return apiRequest<void>(`/api/facilities/${id}/`, {
+    method: "DELETE",
+  })
 }

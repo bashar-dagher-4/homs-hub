@@ -37,7 +37,6 @@ export function NewsCard({ news }: Props) {
             alt={news.title_ar}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
