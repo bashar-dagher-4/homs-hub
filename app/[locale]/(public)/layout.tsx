@@ -1,6 +1,7 @@
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
+import { QueryProvider } from '@/components/providers/QueryProviders';
 
 export default function PublicLayout({
   children,
@@ -8,6 +9,7 @@ export default function PublicLayout({
   children: React.ReactNode
 }) {
   return (
+    <QueryProvider>
     <NuqsAdapter>
       <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -15,5 +17,6 @@ export default function PublicLayout({
         <Footer />
       </div>
     </NuqsAdapter>
+    </QueryProvider>
   )
 }

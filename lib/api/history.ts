@@ -3,7 +3,7 @@ import type { ApiResponse, Sector } from "@/types/common"
 import { mockHistory } from "@/lib/mock/history"
 import { apiRequest } from "@/lib/api/client"
 
-const USE_MOCK = true
+const USE_MOCK = false
 
 export async function getHistory(sector?: Sector): Promise<History[]> {
   if (USE_MOCK) {

@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
   if (!credentials?.username || !credentials?.password) return null
 
   // Mock مؤقت حتى يجهز الباك
-  const USE_MOCK = true
+  const USE_MOCK = false
 
   if (USE_MOCK) {
     const { mockUsers } = await import("@/lib/mock/auth")

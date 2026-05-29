@@ -3,7 +3,7 @@ import type { ApiResponse, Sector } from "@/types/common"
 import { mockServices } from "@/lib/mock/services"
 import { apiRequest } from "@/lib/api/client"
 
-const USE_MOCK = true
+const USE_MOCK = false
 
 export async function getServices(sector?: Sector): Promise<Service[]> {
   if (USE_MOCK) {

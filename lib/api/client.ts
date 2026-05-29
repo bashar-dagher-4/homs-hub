@@ -1,22 +1,19 @@
 import { getSession } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import type { Session } from "next-auth"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
-// دالة مساعدة تجلب الـ Token حسب البيئة
 async function getToken(): Promise<string | null> {
-  // Client Component
   if (typeof window !== "undefined") {
-    const session = await getSession()
-    return (session as any)?.accessToken ?? null
+    const session = await getSession() as Session & { accessToken?: string }
+    return session?.accessToken ?? null
   }
-  // Server Component
-  const session = await getServerSession(authOptions)
-  return (session as any)?.accessToken ?? null
+  const session = await getServerSession(authOptions) as Session & { accessToken?: string }
+  return session?.accessToken ?? null
 }
 
-// دالة الطلب الموحدة
 export async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
@@ -26,7 +23,7 @@ export async function apiRequest<T>(
   const headers: HeadersInit = {
     "Content-Type": "application/json",
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...options.headers,
+    ...(options.headers as Record<string, string> ?? {}),
   }
 
   const res = await fetch(`${API_URL}${endpoint}`, {
@@ -35,7 +32,6 @@ export async function apiRequest<T>(
   })
 
   if (res.status === 401) {
-    // Token انتهى → سجّل خروج تلقائي
     if (typeof window !== "undefined") {
       const { signOut } = await import("next-auth/react")
       signOut({ callbackUrl: "/ar/login" })
@@ -44,9 +40,9 @@ export async function apiRequest<T>(
   }
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({}))
+    const error = await res.json().catch(() => ({})) as { message?: string }
     throw new Error(error.message ?? "حدث خطأ")
   }
 
-  return res.json()
+  return res.json() as Promise<T>
 }

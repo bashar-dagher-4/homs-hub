@@ -1,7 +1,7 @@
 import type { ApiResponse, Sector } from "@/types/common"
 import { mockMonthlyStats } from "@/lib/mock/stats"
 
-const USE_MOCK = true
+const USE_MOCK = false
 
 export type MonthlyStat = {
   month: string

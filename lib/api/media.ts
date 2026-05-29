@@ -2,7 +2,7 @@ import type { Media } from "@/types/media"
 import { mockMedia } from "@/lib/mock/media"
 import { ApiResponse } from "@/types/common";
 
-const USE_MOCK = true
+const USE_MOCK = false
 
 export async function getMedia(): Promise<Media[]> {
   if (USE_MOCK) return mockMedia
