@@ -5,7 +5,7 @@ import { apiRequest } from "@/lib/api/client"
 
 const USE_MOCK = false
 
-export async function getFacility(sector?: Sector): Promise<Facility[]> {
+export async function getFacilities(sector?: Sector): Promise<Facility[]> {
   if (USE_MOCK) {
     if (!sector || sector === "all") return mockFacilities
     return mockFacilities.filter((n) => n.sector === sector)

@@ -6,16 +6,16 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { CheckCircle, Clock } from "lucide-react"
 import { DeleteConfirmModal } from "@/components/shared/DeleteConfirmModal"
 import { getFaqs, answerFaq, deleteFaq } from "@/lib/api/faq"
-import type { FaqItem } from "@/lib/api/faq"
+import type { Faq } from "@/types/faq"
 
 export default function FaqDashboardPage() {
   const locale = useLocale()
   const t = useTranslations("dashboard")
   const queryClient = useQueryClient()
 
-  const [selectedFaq, setSelectedFaq] = useState<FaqItem | null>(null)
+  const [selectedFaq, setSelectedFaq] = useState<Faq | null>(null)
   const [answer, setAnswer] = useState("")
-  const [deleteItem, setDeleteItem] = useState<FaqItem | null>(null)
+  const [deleteItem, setDeleteItem] = useState<Faq | null>(null)
   const [filter, setFilter] = useState<"all" | "pending" | "answered">("all")
 
   const { data: faqs, isLoading } = useQuery({

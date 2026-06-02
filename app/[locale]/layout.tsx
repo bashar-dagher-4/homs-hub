@@ -49,8 +49,8 @@ export async function generateMetadata({
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
-  display: "swap",      
-  preload: true,
+  display: "swap",
+  preload: false,
 })
 
 export default async function LocaleLayout({
