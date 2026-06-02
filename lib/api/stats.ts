@@ -1,48 +1,19 @@
-import type { ApiResponse, Sector } from "@/types/common"
+import { MonthlyStat , SectorStat } from "@/types/status"
 import { mockMonthlyStats } from "@/lib/mock/stats"
+import { apiRequest } from "./client";
 
 const USE_MOCK = false
 
-export type MonthlyStat = {
-  month: string
-  month_en: string
-  news: number
-  events: number
-  services: number
-  facilities: number
-}
-
-export type SectorStat = {
-  sector: Sector
-  news: number
-  events: number
-  services: number
-  facilities: number
-}
-
 export async function getMonthlyStats(): Promise<MonthlyStat[]> {
   if (USE_MOCK) return mockMonthlyStats
-
-  const res = await fetch(`/api/stats/monthly`)
-   const json: ApiResponse<MonthlyStat[]> = await res.json()
-  if (!json.success) throw new Error(json.message)
-
-  return json.data 
+  return apiRequest<MonthlyStat[]>("/api/stats/monthly/")
 }
 
 export async function getSectorStats(): Promise<SectorStat[]> {
-  if (USE_MOCK) {
-    // نبني من الـ mock data الموجودة
-    return [
-      { sector: "sports",    news: 1, events: 3, services: 1, facilities: 1 },
-      { sector: "health",    news: 3, events: 3, services: 1, facilities: 1 },
-      { sector: "education", news: 3, events: 3, services: 1, facilities: 1 },
-    ]
-  }
-
-  const res = await fetch(`/api/stats/sectors`)
-   const json: ApiResponse<SectorStat[]> = await res.json()
-  if (!json.success) throw new Error(json.message)
-
-  return json.data 
+  if (USE_MOCK) return [
+    { sector: "sports",    news: 1, events: 3, services: 1, facilities: 1 },
+    { sector: "health",    news: 3, events: 3, services: 1, facilities: 1 },
+    { sector: "education", news: 3, events: 3, services: 1, facilities: 1 },
+  ]
+  return apiRequest<SectorStat[]>("/api/stats/sectors/")
 }

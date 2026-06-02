@@ -1,50 +1,43 @@
 import type { Facility } from "@/types/facility"
-import type { ApiResponse, Sector } from "@/types/common"
+import type { Sector } from "@/types/common"
 import { mockFacilities } from "@/lib/mock/facilities"
 import { apiRequest } from "@/lib/api/client"
 
 const USE_MOCK = false
 
-export async function getFacilities(sector?: Sector): Promise<Facility[]> {
+export async function getFacility(sector?: Sector): Promise<Facility[]> {
   if (USE_MOCK) {
     if (!sector || sector === "all") return mockFacilities
-    return mockFacilities.filter((f) => f.sector === sector)
+    return mockFacilities.filter((n) => n.sector === sector)
   }
-  const url = sector && sector !== "all"
-    ? `/api/facilities?sector=${sector}`
-    : `/api/facilities`
-  const res = await fetch(url)
-   const json: ApiResponse<Facility[]> = await res.json()
-  if (!json.success) throw new Error(json.message)
 
-  return json.data 
+  const query = sector && sector !== "all" ? `?sector=${sector}` : ""
+  return apiRequest<Facility[]>(`/api/news/${query}`)
 }
 
 export async function getFacilityById(id: string): Promise<Facility | null> {
   if (USE_MOCK) {
-    return mockFacilities.find((f) => f.id === id) ?? null
+    return mockFacilities.find((n) => n.id === id) ?? null
   }
-
-  const res = await fetch(`/api/facilities/${id}`)
-  if (!res.ok) return null
-  return res.json()
+  return apiRequest<Facility>(`/api/news/${id}/`)
 }
+
 export async function createFacility(data: Partial<Facility>): Promise<Facility> {
-  return apiRequest<Facility>("/api/facilities/", {
+  return apiRequest<Facility>("/api/news/", {
     method: "POST",
     body: JSON.stringify(data),
   })
 }
 
 export async function updateFacility(id: string, data: Partial<Facility>): Promise<Facility> {
-  return apiRequest<Facility>(`/api/facilities/${id}/`, {
+  return apiRequest<Facility>(`/api/news/${id}/`, {
     method: "PUT",
     body: JSON.stringify(data),
   })
 }
 
 export async function deleteFacility(id: string): Promise<void> {
-  return apiRequest<void>(`/api/facilities/${id}/`, {
+  return apiRequest<void>(`/api/news/${id}/`, {
     method: "DELETE",
   })
 }

@@ -1,5 +1,5 @@
 import type { Service } from "@/types/service"
-import type { ApiResponse, Sector } from "@/types/common"
+import type { Sector } from "@/types/common"
 import { mockServices } from "@/lib/mock/services"
 import { apiRequest } from "@/lib/api/client"
 
@@ -8,42 +8,35 @@ const USE_MOCK = false
 export async function getServices(sector?: Sector): Promise<Service[]> {
   if (USE_MOCK) {
     if (!sector || sector === "all") return mockServices
-    return mockServices.filter((s) => s.sector === sector)
+    return mockServices.filter((n) => n.sector === sector)
   }
-  const url = sector && sector !== "all"
-    ? `/api/services?sector=${sector}`
-    : `/api/services`
-  const res = await fetch(url)
-   const json: ApiResponse<Service[]> = await res.json()
-  if (!json.success) throw new Error(json.message)
 
-  return json.data 
+  const query = sector && sector !== "all" ? `?sector=${sector}` : ""
+  return apiRequest<Service[]>(`/api/services/${query}`)
 }
 
-export async function getServiceById(id: string): Promise<Service | null> {
+export async function getServicesById(id: string): Promise<Service | null> {
   if (USE_MOCK) {
-    return mockServices.find((s) => s.id === id) ?? null
+    return mockServices.find((n) => n.id === id) ?? null
   }
-
-  const res = await fetch(`/api/services/${id}`)
-  if (!res.ok) return null
-  return res.json()
+  return apiRequest<Service>(`/api/services/${id}/`)
 }
-export async function createService(data: Partial<Service>): Promise<Service> {
+
+export async function createServices(data: Partial<Service>): Promise<Service> {
   return apiRequest<Service>("/api/services/", {
     method: "POST",
     body: JSON.stringify(data),
   })
 }
 
-export async function updateService(id: string, data: Partial<Service>): Promise<Service> {
+export async function updateServices(id: string, data: Partial<Service>): Promise<Service> {
   return apiRequest<Service>(`/api/services/${id}/`, {
     method: "PUT",
     body: JSON.stringify(data),
   })
 }
 
-export async function deleteService(id: string): Promise<void> {
+export async function deleteServices(id: string): Promise<void> {
   return apiRequest<void>(`/api/services/${id}/`, {
     method: "DELETE",
   })
