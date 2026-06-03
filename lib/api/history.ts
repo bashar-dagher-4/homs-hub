@@ -12,32 +12,32 @@ export async function getHistory(sector?: Sector): Promise<History[]> {
   }
 
   const query = sector && sector !== "all" ? `?sector=${sector}` : ""
-  return apiRequest<History[]>(`/api/news/${query}`)
+  return apiRequest<History[]>(`/api/history/${query}`)
 }
 
 export async function getHistoryById(id: string): Promise<History | null> {
   if (USE_MOCK) {
     return mockHistory.find((n) => n.id === id) ?? null
   }
-  return apiRequest<History>(`/api/news/${id}/`)
+  return apiRequest<History>(`/api/history/${id}/`)
 }
 
 export async function createHistory(data: Partial<History>): Promise<History> {
-  return apiRequest<History>("/api/news/", {
+  return apiRequest<History>("/api/history/", {
     method: "POST",
     body: JSON.stringify(data),
   })
 }
 
 export async function updateHistory(id: string, data: Partial<History>): Promise<History> {
-  return apiRequest<History>(`/api/news/${id}/`, {
+  return apiRequest<History>(`/api/history/${id}/`, {
     method: "PUT",
     body: JSON.stringify(data),
   })
 }
 
 export async function deleteHistory(id: string): Promise<void> {
-  return apiRequest<void>(`/api/news/${id}/`, {
+  return apiRequest<void>(`/api/history/${id}/`, {
     method: "DELETE",
   })
 }

@@ -12,32 +12,32 @@ export async function getFacilities(sector?: Sector): Promise<Facility[]> {
   }
 
   const query = sector && sector !== "all" ? `?sector=${sector}` : ""
-  return apiRequest<Facility[]>(`/api/news/${query}`)
+  return apiRequest<Facility[]>(`/api/facilities/${query}`)
 }
 
 export async function getFacilityById(id: string): Promise<Facility | null> {
   if (USE_MOCK) {
     return mockFacilities.find((n) => n.id === id) ?? null
   }
-  return apiRequest<Facility>(`/api/news/${id}/`)
+  return apiRequest<Facility>(`/api/facilities/${id}/`)
 }
 
 export async function createFacility(data: Partial<Facility>): Promise<Facility> {
-  return apiRequest<Facility>("/api/news/", {
+  return apiRequest<Facility>("/api/facilities/", {
     method: "POST",
     body: JSON.stringify(data),
   })
 }
 
 export async function updateFacility(id: string, data: Partial<Facility>): Promise<Facility> {
-  return apiRequest<Facility>(`/api/news/${id}/`, {
+  return apiRequest<Facility>(`/api/facilities/${id}/`, {
     method: "PUT",
     body: JSON.stringify(data),
   })
 }
 
 export async function deleteFacility(id: string): Promise<void> {
-  return apiRequest<void>(`/api/news/${id}/`, {
+  return apiRequest<void>(`/api/facilities/${id}/`, {
     method: "DELETE",
   })
 }

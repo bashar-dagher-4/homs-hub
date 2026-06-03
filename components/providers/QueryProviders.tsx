@@ -10,7 +10,8 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
         defaultOptions: {
           queries: {
             staleTime: 1000 * 60 * 5,  // 5 دقائق قبل إعادة الجلب
-            retry: 1,                   // محاولة واحدة عند الفشل
+            retry: 0,                   // محاولة واحدة عند الفشل
+            refetchOnWindowFocus: false, // عدم إعادة الجلب عند ترك الصفحة والعودة لها
           },
         },
       })
@@ -22,3 +23,31 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
     </QueryClientProvider>
   )
 }
+
+
+
+
+// "use client"
+
+// import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+// import { useState } from "react"
+
+// export function QueryProvider({ children }: { children: React.ReactNode }) {
+//   const [queryClient] = useState(
+//     () =>
+//       new QueryClient({
+//         defaultOptions: {
+//           queries: {
+//             staleTime: 1000 * 60 * 5,  // 5 دقائق قبل إعادة الجلب
+//             retry: 5,                   // محاولة واحدة عند الفشل
+//           },
+//         },
+//       })
+//   )
+
+//   return (
+//     <QueryClientProvider client={queryClient}>
+//       {children}
+//     </QueryClientProvider>
+//   )
+// }
