@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getLocalizedText } from "@/lib/utils"
 import { getFeaturedMedia } from "@/lib/api/media"
 import { Play } from "lucide-react"
+import { useState } from "react";
 // import Link from "next/link"
 // import { ArrowLeft } from "lucide-react"
 
@@ -17,6 +18,7 @@ export function MediaSection() {
     queryKey: ["media"],
     queryFn: getFeaturedMedia,
   })
+  const [imgErr , setImgErr] = useState(false)
 
   return (
     <section className="py-16 px-6">
@@ -58,13 +60,15 @@ export function MediaSection() {
                 style={{ backgroundColor: "var(--muted)" }}
               >
                 {/* الصورة */}
-                {item.url ? (
+                {item.url && !imgErr ? (
                           <Image
                             src={item.url}
                             alt={item.description_ar}
                             fill
+                            sizes="(max-width: 768px) 100vw, 33vw"
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                             loading="lazy"
+                            onError={() => setImgErr(true)}
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">

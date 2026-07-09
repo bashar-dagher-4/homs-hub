@@ -12,6 +12,8 @@ export function QueryProvider({ children }: { children: React.ReactNode }) {
             staleTime: 1000 * 60 * 5,  // 5 دقائق قبل إعادة الجلب
             retry: 0,                   // محاولة واحدة عند الفشل
             refetchOnWindowFocus: false, // عدم إعادة الجلب عند ترك الصفحة والعودة لها
+      //       refetchOnMount: false,     
+      // refetchOnReconnect: false,
           },
         },
       })

@@ -7,10 +7,13 @@ import { Plus } from "lucide-react"
 import { DataTable } from "@/components/shared/DataTable"
 import { DeleteConfirmModal } from "@/components/shared/DeleteConfirmModal"
 import { NewsFormModal } from "@/components/shared/NewsFormModal"
-import { getNews } from "@/lib/api/news"
-import { getEvents } from "@/lib/api/events"
-import { getServices } from "@/lib/api/services"
-import { getFacilities } from "@/lib/api/facilities"
+import { EventFormModal } from "@/components/shared/EventFormModal"
+import { ServiceFormModal } from "@/components/shared/ServiceFormModal"
+import { FacilityFormModal } from "@/components/shared/FacilityFormModal"
+import { getNews, createNews, updateNews, deleteNews } from "@/lib/api/news"
+import { getEvents, createEvent, updateEvent, deleteEvents } from "@/lib/api/events"
+import { getServices, createService, updateService, deleteServices } from "@/lib/api/services"
+import { getFacilities, createFacility, updateFacility, deleteFacility } from "@/lib/api/facilities"
 import { getLocalizedText } from "@/lib/utils"
 import type { News } from "@/types/news"
 import type { Event } from "@/types/event"
@@ -18,6 +21,7 @@ import type { Service } from "@/types/service"
 import type { Facility } from "@/types/facility"
 
 type Tab = "news" | "events" | "services" | "facilities"
+const SECTOR = "health"
 
 export default function HealthDashboard() {
   const t = useTranslations("dashboard")
@@ -27,51 +31,98 @@ export default function HealthDashboard() {
 
   const [activeTab, setActiveTab] = useState<Tab>("news")
   const [deleteItem, setDeleteItem] = useState<{ id: string } | null>(null)
+
   const [editNews, setEditNews] = useState<News | null>(null)
   const [isNewsModalOpen, setIsNewsModalOpen] = useState(false)
 
+  const [editEvent, setEditEvent] = useState<Event | null>(null)
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false)
+
+  const [editService, setEditService] = useState<Service | null>(null)
+  const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
+
+  const [editFacility, setEditFacility] = useState<Facility | null>(null)
+  const [isFacilityModalOpen, setIsFacilityModalOpen] = useState(false)
+
   const { data: news, isLoading: newsLoading } = useQuery({
-    queryKey: ["news", "health"],
-    queryFn: () => getNews("health"),
+    queryKey: ["news", SECTOR],
+    queryFn: () => getNews(SECTOR),
   })
 
   const { data: events, isLoading: eventsLoading } = useQuery({
-    queryKey: ["events", "health"],
-    queryFn: () => getEvents("health"),
+    queryKey: ["events", SECTOR],
+    queryFn: () => getEvents(SECTOR),
   })
 
   const { data: services, isLoading: servicesLoading } = useQuery({
-    queryKey: ["services", "health"],
-    queryFn: () => getServices("health"),
+    queryKey: ["services", SECTOR],
+    queryFn: () => getServices(SECTOR),
   })
 
   const { data: facilities, isLoading: facilitiesLoading } = useQuery({
-    queryKey: ["facilities", "health"],
-    queryFn: () => getFacilities("health"),
+    queryKey: ["facilities", SECTOR],
+    queryFn: () => getFacilities(SECTOR),
   })
 
-  // Mock Delete
+  // حذف حقيقي حسب الـ Tab النشط
   const { mutate: deleteRecord, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => {
-      await new Promise((res) => setTimeout(res, 800))
-      return id
+      if (activeTab === "news") return deleteNews(id)
+      if (activeTab === "events") return deleteEvents(id)
+      if (activeTab === "services") return deleteServices(id)
+      if (activeTab === "facilities") return deleteFacility(id)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [activeTab, "health"] })
+      queryClient.invalidateQueries({ queryKey: [activeTab, SECTOR], refetchType: "active" })
       setDeleteItem(null)
     },
   })
 
-  // Mock Save News
   const { mutate: saveNews, isPending: isSavingNews } = useMutation({
     mutationFn: async (data: Partial<News>) => {
-      await new Promise((res) => setTimeout(res, 800))
-      return data
+      if (editNews) return updateNews(editNews.id, data)
+      return createNews(data)
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["news", "health"] })
+      queryClient.invalidateQueries({ queryKey: ["news", SECTOR], refetchType: "active" })
       setIsNewsModalOpen(false)
       setEditNews(null)
+    },
+  })
+
+  const { mutate: saveEvent, isPending: isSavingEvent } = useMutation({
+    mutationFn: async (data: Partial<Event>) => {
+      if (editEvent) return updateEvent(editEvent.id, data)
+      return createEvent(data)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["events", SECTOR], refetchType: "active" })
+      setIsEventModalOpen(false)
+      setEditEvent(null)
+    },
+  })
+
+  const { mutate: saveService, isPending: isSavingService } = useMutation({
+    mutationFn: async (data: Partial<Service>) => {
+      if (editService) return updateService(editService.id, data)
+      return createService(data)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["services", SECTOR], refetchType: "active" })
+      setIsServiceModalOpen(false)
+      setEditService(null)
+    },
+  })
+
+  const { mutate: saveFacility, isPending: isSavingFacility } = useMutation({
+    mutationFn: async (data: Partial<Facility>) => {
+      if (editFacility) return updateFacility(editFacility.id, data)
+      return createFacility(data)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["facilities", SECTOR], refetchType: "active" })
+      setIsFacilityModalOpen(false)
+      setEditFacility(null)
     },
   })
 
@@ -114,7 +165,8 @@ export default function HealthDashboard() {
 
   const servicesColumns = [
     {
-      key: "title_ar",label: locale === "ar" ? "العنوان" : "Title",
+      key: "title_ar",
+      label: locale === "ar" ? "العنوان" : "Title",
       render: (item: Service) => getLocalizedText(item.title_ar, item.title_en, locale),
     },
     {
@@ -141,6 +193,22 @@ export default function HealthDashboard() {
     },
   ]
 
+  function handleAddClick() {
+    if (activeTab === "news") {
+      setEditNews(null)
+      setIsNewsModalOpen(true)
+    } else if (activeTab === "events") {
+      setEditEvent(null)
+      setIsEventModalOpen(true)
+    } else if (activeTab === "services") {
+      setEditService(null)
+      setIsServiceModalOpen(true)
+    } else if (activeTab === "facilities") {
+      setEditFacility(null)
+      setIsFacilityModalOpen(true)
+    }
+  }
+
   return (
     <div className="flex flex-col gap-6">
 
@@ -159,10 +227,7 @@ export default function HealthDashboard() {
           />
         </div>
         <button
-          onClick={() => {
-            setEditNews(null)
-            setIsNewsModalOpen(activeTab === "news")
-          }}
+          onClick={handleAddClick}
           className="flex items-center gap-2 px-4 py-2 rounded-xl font-bold text-sm text-white"
           style={{ backgroundColor: "var(--primary)" }}
         >
@@ -210,7 +275,10 @@ export default function HealthDashboard() {
         <DataTable
           data={events ?? []}
           columns={eventsColumns}
-          onEdit={(item) => console.log("edit event", item)}
+          onEdit={(item) => {
+            setEditEvent(item)
+            setIsEventModalOpen(true)
+          }}
           onDelete={(item) => setDeleteItem(item)}
           isLoading={eventsLoading}
         />
@@ -220,7 +288,10 @@ export default function HealthDashboard() {
         <DataTable
           data={services ?? []}
           columns={servicesColumns}
-          onEdit={(item) => console.log("edit service", item)}
+          onEdit={(item) => {
+            setEditService(item)
+            setIsServiceModalOpen(true)
+          }}
           onDelete={(item) => setDeleteItem(item)}
           isLoading={servicesLoading}
         />
@@ -230,7 +301,10 @@ export default function HealthDashboard() {
         <DataTable
           data={facilities ?? []}
           columns={facilitiesColumns}
-          onEdit={(item) => console.log("edit facility", item)}
+          onEdit={(item) => {
+            setEditFacility(item)
+            setIsFacilityModalOpen(true)
+          }}
           onDelete={(item) => setDeleteItem(item)}
           isLoading={facilitiesLoading}
         />
@@ -243,9 +317,45 @@ export default function HealthDashboard() {
           setIsNewsModalOpen(false)
           setEditNews(null)
         }}
-        onSubmit={(data) => saveNews({ ...data, sector: "health" })}
+        onSubmit={(data) => saveNews({ ...data, sector: SECTOR })}
         editItem={editNews}
         isLoading={isSavingNews}
+      />
+
+      {/* Modal الفعاليات */}
+      <EventFormModal
+        isOpen={isEventModalOpen}
+        onClose={() => {
+          setIsEventModalOpen(false)
+          setEditEvent(null)
+        }}
+        onSubmit={(data) => saveEvent({ ...data, sector: SECTOR })}
+        editItem={editEvent}
+        isLoading={isSavingEvent}
+      />
+
+      {/* Modal الخدمات */}
+      <ServiceFormModal
+        isOpen={isServiceModalOpen}
+        onClose={() => {
+          setIsServiceModalOpen(false)
+          setEditService(null)
+        }}
+        onSubmit={(data) => saveService({ ...data, sector: SECTOR })}
+        editItem={editService}
+        isLoading={isSavingService}
+      />
+
+      {/* Modal المنشآت */}
+      <FacilityFormModal
+        isOpen={isFacilityModalOpen}
+        onClose={() => {
+          setIsFacilityModalOpen(false)
+          setEditFacility(null)
+        }}
+        onSubmit={(data) => saveFacility({ ...data, sector: SECTOR })}
+        editItem={editFacility}
+        isLoading={isSavingFacility}
       />
 
       {/* Modal الحذف */}

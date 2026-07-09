@@ -31,7 +31,7 @@ export async function createHistory(data: Partial<History>): Promise<History> {
 
 export async function updateHistory(id: string, data: Partial<History>): Promise<History> {
   return apiRequest<History>(`/api/history/${id}/`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(data),
   })
 }

@@ -1,9 +1,13 @@
+
+
+
 import { getSession } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"
 import type { Session } from "next-auth"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
+
 
 async function getToken(): Promise<string | null> {
   if (typeof window !== "undefined") {
@@ -20,8 +24,11 @@ export async function apiRequest<T>(
 ): Promise<T> {
   const token = await getToken()
 
+  const isFormData = options.body instanceof FormData
+
   const headers: HeadersInit = {
-    "Content-Type": "application/json",
+    // لا تضع Content-Type إذا كان FormData — المتصفح يحدده تلقائياً مع boundary
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...(options.headers as Record<string, string> ?? {}),
   }
@@ -46,7 +53,3 @@ export async function apiRequest<T>(
 
   return res.json() as Promise<T>
 }
-
-
-
-

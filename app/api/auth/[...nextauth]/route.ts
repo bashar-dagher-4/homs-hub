@@ -14,32 +14,11 @@ export const authOptions: NextAuthOptions = {
       },
 
      async authorize(credentials): Promise<AuthUser | null> {
+      // console.log("Authorizing with credentials:", credentials) // Debugging line
   if (!credentials?.username || !credentials?.password) return null
-
-  // Mock مؤقت حتى يجهز الباك
-  const USE_MOCK = false
-
-  if (USE_MOCK) {
-    const { mockUsers } = await import("@/lib/mock/auth")
-    const user = mockUsers.find(
-      (u) =>
-        u.username === credentials.username &&
-        u.password === credentials.password
-    )
-    if (!user) return null
-    return {
-      id: user.id,
-      name: user.name,
-      username: user.username,
-      role: user.role,
-      sector: user.sector,
-      accessToken: "mock-token",
-    }
-  }
-
-  // الكود الحقيقي يبقى هنا للاستخدام لاحقاً
+  
   try {
-    const res = await fetch(`${API_URL}/api/auth/login/`, {
+    const res = await fetch(`${API_URL}/api/login/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -55,7 +34,7 @@ export const authOptions: NextAuthOptions = {
       username: data.user.username,
       role: data.user.role,
       sector: data.user.sector,
-      accessToken: data.token,
+      accessToken: data.access,
     }
   } catch {
     return null

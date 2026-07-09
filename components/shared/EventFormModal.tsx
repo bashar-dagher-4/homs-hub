@@ -4,11 +4,11 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useTranslations, useLocale } from "next-intl"
+import { useLocale } from "next-intl"
 import { X } from "lucide-react"
-import type { News } from "@/types/news"
+import type { Event } from "@/types/event"
 
-const newsSchema = z.object({
+const eventSchema = z.object({
   title_ar: z.string().min(3, "العنوان العربي مطلوب"),
   title_en: z.string().min(3, "English title is required"),
   description_ar: z.string().min(10, "الوصف العربي مطلوب"),
@@ -17,17 +17,17 @@ const newsSchema = z.object({
   image: z.any().optional(),
 })
 
-type NewsInput = z.infer<typeof newsSchema>
+type EventInput = z.infer<typeof eventSchema>
 
 type Props = {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (data: NewsInput) => void
-  editItem?: News | null
+  onSubmit: (data: EventInput) => void
+  editItem?: Event | null
   isLoading?: boolean
 }
 
-export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }: Props) {
+export function EventFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }: Props) {
   const locale = useLocale()
 
   const {
@@ -35,8 +35,8 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<NewsInput>({
-    resolver: zodResolver(newsSchema),
+  } = useForm<EventInput>({
+    resolver: zodResolver(eventSchema),
   })
 
   useEffect(() => {
@@ -86,8 +86,8 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
         >
           <h3 className="font-bold text-lg" style={{ color: "var(--foreground)" }}>
             {editItem
-              ? locale === "ar" ? "تعديل خبر" : "Edit News"
-              : locale === "ar" ? "إضافة خبر" : "Add News"
+              ? locale === "ar" ? "تعديل فعالية" : "Edit Event"
+              : locale === "ar" ? "إضافة فعالية" : "Add Event"
             }
           </h3>
           <button
@@ -191,17 +191,24 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
               </p>
             )}
           </div>
+
+          {/* الصورة */}
           <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
-                {locale === "ar" ? "صورة الخبر" : "News Image"}
-              </label>
-              <input
-                {...register("image")}
-                type="file"
-                accept="image/*"
-                className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                style={inputStyle}
-              />
+            <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
+              {locale === "ar" ? "الصورة" : "Image"}
+            </label>
+            <input
+              {...register("image")}
+              type="file"
+              accept="image/*"
+              className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
+              style={inputStyle}
+            />
+            <p className="text-xs" style={{ color: "var(--muted-foreground)" }}>
+              {locale === "ar"
+                ? "اتركه فارغاً إذا لا تريد تغيير الصورة الحالية"
+                : "Leave empty to keep the current image"}
+            </p>
           </div>
 
           {/* الأزرار */}

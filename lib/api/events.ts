@@ -1,43 +1,60 @@
 import type { Event } from "@/types/event"
 import type { Sector } from "@/types/common"
-import { mockEvents } from "@/lib/mock/events"
 import { apiRequest } from "@/lib/api/client"
 
-const USE_MOCK = false
-
 export async function getEvents(sector?: Sector): Promise<Event[]> {
-  if (USE_MOCK) {
-    if (!sector || sector === "all") return mockEvents
-    return mockEvents.filter((n) => n.sector === sector)
-  }
-
   const query = sector && sector !== "all" ? `?sector=${sector}` : ""
-  return apiRequest<Event[]>(`/api/news/${query}`)
+  return apiRequest<Event[]>(`/api/events/${query}`)
 }
 
 export async function getEventById(id: string): Promise<Event | null> {
-  if (USE_MOCK) {
-    return mockEvents.find((n) => n.id === id) ?? null
-  }
-  return apiRequest<Event>(`/api/news/${id}/`)
+  return apiRequest<Event>(`/api/events/${id}/`)
 }
 
-export async function createEvent(data: Partial<Event>): Promise<Event> {
-  return apiRequest<Event>("/api/news/", {
+function buildEventFormData(data: Partial<Event> & { image?: FileList }): FormData {
+  const formData = new FormData()
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (value === undefined || value === null) return
+
+    if (key === "image") {
+      if (value instanceof FileList && value.length > 0) {
+        formData.append("image", value[0])
+      }
+      return
+    }
+
+    formData.append(key, String(value))
+  })
+
+  return formData
+}
+
+export async function createEvent(
+  data: Partial<Event> & { image?: FileList }
+): Promise<Event> {
+  const formData = buildEventFormData(data)
+  return apiRequest<Event>("/api/events/", {
     method: "POST",
-    body: JSON.stringify(data),
+    body: formData,
+    headers: {},
   })
 }
 
-export async function updateEvent(id: string, data: Partial<Event>): Promise<Event> {
-  return apiRequest<Event>(`/api/news/${id}/`, {
-    method: "PUT",
-    body: JSON.stringify(data),
+export async function updateEvent(
+  id: string,
+  data: Partial<Event> & { image?: FileList }
+): Promise<Event> {
+  const formData = buildEventFormData(data)
+  return apiRequest<Event>(`/api/events/${id}/`, {
+    method: "PATCH",
+    body: formData,
+    headers: {},
   })
 }
 
-export async function deleteEvent(id: string): Promise<void> {
-  return apiRequest<void>(`/api/news/${id}/`, {
+export async function deleteEvents(id: string): Promise<void> {
+  return apiRequest<void>(`/api/events/${id}/`, {
     method: "DELETE",
   })
 }

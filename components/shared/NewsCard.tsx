@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl"
 import { Calendar , ArrowRight } from "lucide-react"
 import type { News } from "@/types/news"
 import { getLocalizedText } from "@/lib/utils"
+import { useState } from "react";
 
 type Props = {
   news: News
@@ -12,6 +13,7 @@ type Props = {
 export function NewsCard({ news }: Props) {
   const locale = useLocale()
   const t = useTranslations("common")
+  const [imgErr , setImgErr] = useState(false)
 
   const formattedDate = new Date(news.date).toLocaleDateString(
     locale === "ar" ? "ar-SY" : "en-US",
@@ -31,12 +33,15 @@ export function NewsCard({ news }: Props) {
         className="relative h-48 w-full overflow-hidden"
         style={{ backgroundColor: "var(--muted)" }}
       >
-        {news.image ? (
+        {news.image && !imgErr ? (
           <Image
             src={news.image}
             alt={news.title_ar}
             fill
+            sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            onError={() => setImgErr(true)}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center">

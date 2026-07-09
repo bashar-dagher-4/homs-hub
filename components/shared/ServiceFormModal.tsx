@@ -4,30 +4,29 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { useTranslations, useLocale } from "next-intl"
+import { useLocale } from "next-intl"
 import { X } from "lucide-react"
-import type { News } from "@/types/news"
+import type { Service } from "@/types/service"
 
-const newsSchema = z.object({
+const serviceSchema = z.object({
   title_ar: z.string().min(3, "العنوان العربي مطلوب"),
   title_en: z.string().min(3, "English title is required"),
   description_ar: z.string().min(10, "الوصف العربي مطلوب"),
   description_en: z.string().min(10, "English description is required"),
-  date: z.string().min(1, "التاريخ مطلوب"),
-  image: z.any().optional(),
+  cost: z.string().optional(),
 })
 
-type NewsInput = z.infer<typeof newsSchema>
+type ServiceInput = z.infer<typeof serviceSchema>
 
 type Props = {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (data: NewsInput) => void
-  editItem?: News | null
+  onSubmit: (data: ServiceInput) => void
+  editItem?: Service | null
   isLoading?: boolean
 }
 
-export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }: Props) {
+export function ServiceFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }: Props) {
   const locale = useLocale()
 
   const {
@@ -35,8 +34,8 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<NewsInput>({
-    resolver: zodResolver(newsSchema),
+  } = useForm<ServiceInput>({
+    resolver: zodResolver(serviceSchema),
   })
 
   useEffect(() => {
@@ -46,7 +45,7 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
         title_en: editItem.title_en,
         description_ar: editItem.description_ar,
         description_en: editItem.description_en,
-        date: editItem.date,
+        cost: editItem.cost ?? "",
       })
     } else {
       reset({
@@ -54,7 +53,7 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
         title_en: "",
         description_ar: "",
         description_en: "",
-        date: "",
+        cost: "",
       })
     }
   }, [editItem, reset])
@@ -86,8 +85,8 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
         >
           <h3 className="font-bold text-lg" style={{ color: "var(--foreground)" }}>
             {editItem
-              ? locale === "ar" ? "تعديل خبر" : "Edit News"
-              : locale === "ar" ? "إضافة خبر" : "Add News"
+              ? locale === "ar" ? "تعديل خدمة" : "Edit Service"
+              : locale === "ar" ? "إضافة خدمة" : "Add Service"
             }
           </h3>
           <button
@@ -174,34 +173,17 @@ export function NewsFormModal({ isOpen, onClose, onSubmit, editItem, isLoading }
             )}
           </div>
 
-          {/* التاريخ */}
+          {/* التكلفة */}
           <div className="flex flex-col gap-1.5">
             <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
-              {locale === "ar" ? "التاريخ" : "Date"}
+              {locale === "ar" ? "التكلفة (اختياري)" : "Cost (optional)"}
             </label>
             <input
-              {...register("date")}
-              type="date"
+              {...register("cost")}
+              placeholder={locale === "ar" ? "اتركه فارغاً إذا كانت مجانية" : "Leave empty if free"}
               className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
               style={inputStyle}
             />
-            {errors.date && (
-              <p className="text-xs" style={{ color: "var(--danger-500)" }}>
-                {errors.date.message}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
-                {locale === "ar" ? "صورة الخبر" : "News Image"}
-              </label>
-              <input
-                {...register("image")}
-                type="file"
-                accept="image/*"
-                className="w-full px-4 py-2.5 rounded-xl text-sm outline-none"
-                style={inputStyle}
-              />
           </div>
 
           {/* الأزرار */}

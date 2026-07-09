@@ -70,9 +70,9 @@ export function DeleteConfirmModal({ isOpen, onConfirm, onCancel, isLoading }: P
             </button>
             <button
               onClick={onConfirm}
-              disabled={isLoading}
+             disabled={isLoading}
               className="flex-1 py-2.5 rounded-xl font-bold text-sm text-white transition-colors disabled:opacity-50"
-              style={{ backgroundColor: "var(--danger-500)" }}
+              style={{ backgroundColor: "var(--color-danger-500)" }}
             >
               {isLoading
                 ? locale === "ar" ? "جار الحذف..." : "Deleting..."

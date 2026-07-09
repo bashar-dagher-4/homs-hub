@@ -1,38 +1,78 @@
 import type { Facility } from "@/types/facility"
 import type { Sector } from "@/types/common"
-import { mockFacilities } from "@/lib/mock/facilities"
 import { apiRequest } from "@/lib/api/client"
 
-const USE_MOCK = false
-
 export async function getFacilities(sector?: Sector): Promise<Facility[]> {
-  if (USE_MOCK) {
-    if (!sector || sector === "all") return mockFacilities
-    return mockFacilities.filter((n) => n.sector === sector)
-  }
-
   const query = sector && sector !== "all" ? `?sector=${sector}` : ""
   return apiRequest<Facility[]>(`/api/facilities/${query}`)
 }
 
 export async function getFacilityById(id: string): Promise<Facility | null> {
-  if (USE_MOCK) {
-    return mockFacilities.find((n) => n.id === id) ?? null
-  }
   return apiRequest<Facility>(`/api/facilities/${id}/`)
 }
 
-export async function createFacility(data: Partial<Facility>): Promise<Facility> {
+function buildFacilityFormData(
+  data: Partial<Facility> & {
+    image?: FileList
+    lat?: string | number
+    lng?: string | number
+    address_ar?: string
+    address_en?: string
+  }
+): FormData {
+  const formData = new FormData()
+
+  Object.entries(data).forEach(([key, value]) => {
+    if (value === undefined || value === null) return
+
+    if (key === "image") {
+      if (value instanceof FileList && value.length > 0) {
+        formData.append("image", value[0])
+      }
+      return
+    }
+
+    // location هو object متداخل — لا نرسله مباشرة، نرسل حقوله المسطحة بدلاً منه
+    if (key === "location") return
+
+    formData.append(key, String(value))
+  })
+
+  return formData
+}
+
+export async function createFacility(
+  data: Partial<Facility> & {
+    image?: FileList
+    lat?: string | number
+    lng?: string | number
+    address_ar?: string
+    address_en?: string
+  }
+): Promise<Facility> {
+  const formData = buildFacilityFormData(data)
   return apiRequest<Facility>("/api/facilities/", {
     method: "POST",
-    body: JSON.stringify(data),
+    body: formData,
+    headers: {},
   })
 }
 
-export async function updateFacility(id: string, data: Partial<Facility>): Promise<Facility> {
+export async function updateFacility(
+  id: string,
+  data: Partial<Facility> & {
+    image?: FileList
+    lat?: string | number
+    lng?: string | number
+    address_ar?: string
+    address_en?: string
+  }
+): Promise<Facility> {
+  const formData = buildFacilityFormData(data)
   return apiRequest<Facility>(`/api/facilities/${id}/`, {
-    method: "PUT",
-    body: JSON.stringify(data),
+    method: "PATCH",
+    body: formData,
+    headers: {},
   })
 }
 
