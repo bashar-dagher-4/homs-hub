@@ -22,8 +22,9 @@ function buildNewsFormData(data: Partial<News> & { image?: FileList }): FormData
     if (value === undefined || value === null) return
 
     if (key === "image") {
-      if (value instanceof FileList && value.length > 0) {
-        formData.append("image", value[0])
+       const fileList = value as FileList
+      if (fileList instanceof FileList && fileList.length > 0) {
+        formData.append("image", fileList[0])
       }
       // إذا لم توجد صورة جديدة، لا نرسل الحقل أصلاً (نترك الصورة القديمة كما هي)
       return

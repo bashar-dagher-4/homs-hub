@@ -18,8 +18,9 @@ function buildEventFormData(data: Partial<Event> & { image?: FileList }): FormDa
     if (value === undefined || value === null) return
 
     if (key === "image") {
-      if (value instanceof FileList && value.length > 0) {
-        formData.append("image", value[0])
+      const fileList = value as FileList
+      if (fileList instanceof FileList && fileList.length > 0) {
+        formData.append("image", fileList[0])
       }
       return
     }

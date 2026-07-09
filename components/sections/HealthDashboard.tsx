@@ -79,7 +79,7 @@ export default function HealthDashboard() {
   })
 
   const { mutate: saveNews, isPending: isSavingNews } = useMutation({
-    mutationFn: async (data: Partial<News>) => {
+    mutationFn: async (data: Partial<News> & { image?: FileList }) => {
       if (editNews) return updateNews(editNews.id, data)
       return createNews(data)
     },
@@ -91,7 +91,7 @@ export default function HealthDashboard() {
   })
 
   const { mutate: saveEvent, isPending: isSavingEvent } = useMutation({
-    mutationFn: async (data: Partial<Event>) => {
+    mutationFn: async (data: Partial<Event> & { image?: FileList }) => {
       if (editEvent) return updateEvent(editEvent.id, data)
       return createEvent(data)
     },
@@ -115,7 +115,7 @@ export default function HealthDashboard() {
   })
 
   const { mutate: saveFacility, isPending: isSavingFacility } = useMutation({
-    mutationFn: async (data: Partial<Facility>) => {
+    mutationFn: async (data: Partial<Facility> & { image?: FileList }) => {
       if (editFacility) return updateFacility(editFacility.id, data)
       return createFacility(data)
     },
