@@ -14,6 +14,7 @@ export function HeroSection() {
         src="/hero.webp"
         alt={t('title')}
         fill
+        fetchPriority="high"
         priority
         className="object-cover"
       />
